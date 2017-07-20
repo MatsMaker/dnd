@@ -76,9 +76,12 @@ export class TrunkComponent {
 
   private droppedItemToPoint(item, pointOfSpace): void {
     const activeItem = this.items.find(i => i.id === item.id);
-    if (this.space[pointOfSpace.x + activeItem.size.width - 1]
-      && this.space[pointOfSpace.x + activeItem.size.width - 1][pointOfSpace.y + activeItem.size.height - 1]
-      && this.space[pointOfSpace.x + activeItem.size.width - 1][pointOfSpace.y + activeItem.size.height - 1].content === null) {
+    if (this.space[pointOfSpace.x + activeItem.size.width]
+      && this.space[pointOfSpace.x + activeItem.size.width][pointOfSpace.y + activeItem.size.height]
+      && this.space[pointOfSpace.x + activeItem.size.width][pointOfSpace.y + activeItem.size.height].content === null) {
+
+    }
+    if (!this.space[pointOfSpace.x + activeItem.size.width][pointOfSpace.y + activeItem.size.height].content) {
       activeItem.inTrunk = true;
       this.space[pointOfSpace.x][pointOfSpace.y].content = activeItem.name;
     }
