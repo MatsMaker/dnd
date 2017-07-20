@@ -6,7 +6,7 @@
        [ngClass]="getItemClass(item.id)"
        mwlDraggable
        [dropData]="item.id"
-       (dragStart)="dragStart($event, item.id)"
+       (dragStart)="dragStart(item.id)"
        (dragEnd)="dragEnd()">
     {{item.name}} - <br/>
     width: {{item.size.width}}, <br/>
@@ -30,7 +30,7 @@
            class="in-trunk"
            [ngClass]="getItemClass(point.content)"
            [dropData]="point.content"
-           (dragStart)="dragStart($event, point.content)"
+           (dragStart)="dragStart(point.content)"
            (dragEnd)="dragEnd()"
       >
         [+]
