@@ -1,55 +1,5 @@
 import {Component} from '@angular/core';
 
-const ITEMS = [{
-  id: 1,
-  name: 'bike',
-  inTrunk: false,
-  size: {
-    width: 4,
-    height: 2
-  },
-}, {
-  id: 2,
-  name: 'cap',
-  inTrunk: false,
-  size: {
-    width: 1,
-    height: 1
-  },
-}, {
-  id: 3,
-  name: 'camp',
-  inTrunk: false,
-  size: {
-    width: 2,
-    height: 2
-  }
-}, {
-  id: 4,
-  name: 'lamp',
-  inTrunk: false,
-  size: {
-    width: 1,
-    height: 3
-  }
-}, {
-  id: 5,
-  name: 'cup',
-  inTrunk: false,
-  size: {
-    width: 1,
-    height: 2
-  }
-}, {
-  id: 6,
-  name: 'sugar',
-  inTrunk: false,
-  size: {
-    width: 1,
-    height: 2
-  }
-}]
-
 const SPACE_SIZE = [5, 4]
 
 
@@ -93,6 +43,9 @@ export class TrunkComponent {
     if (!pointOfSpace.content
       || this.space[pointOfSpace.y][pointOfSpace.x].content === event.dropData) {
       this.droppedItemToPoint(event.dropData, pointOfSpace);
+    }
+    if (this.isEndGame()) {
+      alert('You is finished!')
     }
   }
 
@@ -178,6 +131,10 @@ export class TrunkComponent {
     }
   }
 
+  private isEndGame() {
+    return !this.items.find(i => !i.inTrunk)
+  }
+
   private _getToPoing(activeItem, pointOfSpace) {
     return {
       x: pointOfSpace.x + activeItem.size.width - 1,
@@ -204,3 +161,105 @@ export class TrunkComponent {
     }
   }
 }
+
+
+var ITEMS = [{
+  id: 1,
+  name: 'bike',
+  inTrunk: false,
+  size: {
+    width: 4,
+    height: 2
+  },
+}, {
+  id: 2,
+  name: 'cap',
+  inTrunk: false,
+  size: {
+    width: 1,
+    height: 1
+  },
+}, {
+  id: 3,
+  name: 'camp',
+  inTrunk: false,
+  size: {
+    width: 2,
+    height: 2
+  }
+}, {
+  id: 4,
+  name: 'lamp',
+  inTrunk: false,
+  size: {
+    width: 1,
+    height: 3
+  }
+}, {
+  id: 5,
+  name: 'cup',
+  inTrunk: false,
+  size: {
+    width: 1,
+    height: 2
+  }
+}, {
+  id: 6,
+  name: 'sugar',
+  inTrunk: false,
+  size: {
+    width: 1,
+    height: 2
+  }
+}]
+
+
+// var ITEMS = [{
+//   id: 1,
+//   name: 'bike',
+//   inTrunk: false,
+//   size: {
+//     width: 1,
+//     height: 2
+//   },
+// }, {
+//   id: 2,
+//   name: 'cap',
+//   inTrunk: false,
+//   size: {
+//     width: 2,
+//     height: 3
+//   },
+// }, {
+//   id: 3,
+//   name: 'camp',
+//   inTrunk: false,
+//   size: {
+//     width: 2,
+//     height: 2
+//   }
+// }, {
+//   id: 4,
+//   name: 'lamp',
+//   inTrunk: false,
+//   size: {
+//     width: 1,
+//     height: 4
+//   }
+// }, {
+//   id: 5,
+//   name: 'cup',
+//   inTrunk: false,
+//   size: {
+//     width: 1,
+//     height: 2
+//   }
+// }, {
+//   id: 6,
+//   name: 'sugar',
+//   inTrunk: false,
+//   size: {
+//     width: 2,
+//     height: 1
+//   }
+// }]
