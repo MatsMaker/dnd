@@ -73,11 +73,12 @@ export class TrunkComponent {
   }
 
   public dragStart(event) {
-    console.log('Element was dragged', event);
+    // console.log('Element was dragged', event);
   }
 
   public onDrop(event, pointOfSpace) {
-    if (!pointOfSpace.content) {
+    if (!pointOfSpace.content
+      || this.space[pointOfSpace.y][pointOfSpace.x].content === event.dropData) {
       this.droppedItemToPoint(event.dropData, pointOfSpace);
     }
   }
@@ -124,12 +125,19 @@ export class TrunkComponent {
     });
   }
 
-  private enoughSpace(fromPoint, toPoint): boolean {
-    return this.space[fromPoint.y][fromPoint.x].content === null
-      && this.space
-      && this.space[toPoint.y]
-      && this.space[toPoint.y][toPoint.x]
-      && this.space[toPoint.y][toPoint.x].content === null;
+  private enoughSpaceForItem(itemId, fromPoint, toPoint): boolean {
+    for (let iY = fromPoint.y; iY <= toPoint.y; iY++) {
+      for (let iX = fromPoint.x; iX <= toPoint.x; iX++) {
+        if (!(this.space
+          && this.space[iY]
+          && this.space[iY][iX]
+          && (this.space[iY][iX].content === null
+            || this.space[iY][iX].content === itemId))) {
+              return false;
+            }
+      }
+    }
+    return true;
   }
 
   private droppedItemToPoint(itemId, pointOfSpace): void {
@@ -139,7 +147,7 @@ export class TrunkComponent {
       x: pointOfSpace.x + activeItem.size.width - 1,
       y: pointOfSpace.y + activeItem.size.height - 1
     };
-    if (this.enoughSpace(pointOfSpace, toPoint)) {
+    if (this.enoughSpaceForItem(activeItem.id, pointOfSpace, toPoint)) {
       if (activeItem.inTrunk) {
         this.clearUpPlace(activeItem.id);
       }
