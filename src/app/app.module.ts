@@ -1,14 +1,16 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { DragAndDropModule } from 'angular-draggable-droppable';
 
 import { AppComponent } from './app.component';
+import { TrunkComponent } from './trunk/trunk.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent, TrunkComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule, DragAndDropModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

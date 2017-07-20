@@ -1,0 +1,53 @@
+.item-space {
+  display: inline-block;
+  width: 75px;
+  height: 75px;
+  border: solid 1px;
+}
+
+.drop-area {
+  width: 100%;
+  /*height: 100%;*/
+  background-color: antiquewhite;
+}
+
+
+.item {
+  display: inline-block;
+  background-color: aquamarine;
+  border: solid 1px;
+}
+.item.in-trunk {
+  background-color: brown;
+}
+.item.width-1 {
+  width: 75px;
+}
+
+.item.width-2 {
+  width: 150px;
+}
+
+.item.width-3 {
+  width: 225px;
+}
+
+.item.width-4 {
+  width: 300px;
+}
+
+.item.height-1 {
+  height: 75px;
+}
+
+.item.height-2 {
+  height: 150px;
+}
+
+.item.height-3 {
+  height: 225px;
+}
+
+.item.height-4 {
+  height: 300px;
+}
