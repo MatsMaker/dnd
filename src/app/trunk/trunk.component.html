@@ -2,9 +2,10 @@
 
 <div>
   <div *ngFor="let item of items"
-       [ngClass]="getItemClass(item)"
+       class="baggage"
+       [ngClass]="getItemClass(item.id)"
        mwlDraggable
-       [dropData]="item"
+       [dropData]="item.id"
        (dragStart)="dragStart($event)">
     {{item.name}} - <br/>
     width: {{item.size.width}}, <br/>
@@ -22,6 +23,15 @@
       x:{{point.x}}
       y:{{point.y}}
       content: {{point.content}}
+      <div *ngIf="point.headPoint"
+           mwlDraggable
+           class="in-trunk"
+           [ngClass]="getItemClass(point.content)"
+           [dropData]="point.content"
+           (dragStart)="dragStart($event)"
+      >
+        [+]
+      </div>
     </div>
   </div>
 </div>
