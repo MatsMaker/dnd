@@ -6,7 +6,8 @@
        [ngClass]="getItemClass(item.id)"
        mwlDraggable
        [dropData]="item.id"
-       (dragStart)="dragStart($event)">
+       (dragStart)="dragStart($event, item.id)"
+       (dragEnd)="dragEnd()">
     {{item.name}} - <br/>
     width: {{item.size.width}}, <br/>
     height: {{item.size.height}}
@@ -17,9 +18,10 @@
   <div *ngFor="let y of space" class="row-space">
     <div *ngFor="let point of y"
          class="item-space drop-point"
-         [ngClass]="{'item-busy': point.content}"
+         [ngClass]="{'item-busy': point.content, 'in-shadow': point.inShadow}"
          mwlDroppable
-         (drop)="onDrop($event, point)">
+         (drop)="onDrop($event, point)"
+         (dragOver)="dragOver(point)">
       x:{{point.x}}
       y:{{point.y}}
       content: {{point.content}}
@@ -28,7 +30,8 @@
            class="in-trunk"
            [ngClass]="getItemClass(point.content)"
            [dropData]="point.content"
-           (dragStart)="dragStart($event)"
+           (dragStart)="dragStart($event, point.content)"
+           (dragEnd)="dragEnd()"
       >
         [+]
       </div>

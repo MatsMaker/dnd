@@ -61,6 +61,11 @@ const SPACE_SIZE = [5, 4]
 export class TrunkComponent {
   public items = ITEMS;
   public space: Array<any>;
+  public indexActiveItem;
+
+  get activeItem() {
+    return this.items[this.indexActiveItem];
+  }
 
   constructor() {
     this.space = this.createSpace(SPACE_SIZE);
@@ -72,8 +77,16 @@ export class TrunkComponent {
     return `item width-${item.size.width} height-${item.size.height} ${stateClassName}`;
   }
 
-  public dragStart(event) {
-    // console.log('Element was dragged', event);
+  public dragStart(event, itemId) {
+    this.indexActiveItem = this.items.findIndex(i => i.id === itemId);
+  }
+
+  public dragEnd() {
+    this.clearFromShadow();
+  }
+
+  public dragOver(pointOfSpace) {
+    this.reRenderShadow(pointOfSpace);
   }
 
   public onDrop(event, pointOfSpace) {
@@ -81,6 +94,20 @@ export class TrunkComponent {
       || this.space[pointOfSpace.y][pointOfSpace.x].content === event.dropData) {
       this.droppedItemToPoint(event.dropData, pointOfSpace);
     }
+  }
+
+  private clearFromShadow() {
+    this._allTrunkArea((pointOfSpace) => {
+      pointOfSpace.inShadow = false;
+    });
+  }
+
+  private reRenderShadow(pointOfSpace) {
+    this.clearFromShadow();
+    const toPoint = this._getToPoing(this.activeItem, pointOfSpace);
+    this._allItemArea((pointOfSpace) => {
+      pointOfSpace.inShadow = true;
+    }, pointOfSpace, toPoint);
   }
 
   private createSpace(spaceSize) {
@@ -93,6 +120,7 @@ export class TrunkComponent {
         space[iY].push({
           content: null,
           headPoint: false,
+          inShadow: false,
           x: iX,
           y: iY
         });
@@ -101,17 +129,16 @@ export class TrunkComponent {
     return space;
   }
 
-  private takeUpPlaces(indexActiveItem, startPoint, toPoint) {
-    const activeItem = this.items[indexActiveItem];
-    for (let iY = startPoint.y; iY <= toPoint.y; iY++) {
-      for (let iX = startPoint.x; iX <= toPoint.x; iX++) {
-        activeItem.inTrunk = true;
-        this.space[iY][iX].content = activeItem.id;
-        if (startPoint.x === iX && startPoint.y === iY) {
-          this.space[iY][iX].headPoint = true;
-        }
+  private takeUpPlaces(startPoint, toPoint) {
+    const activeItem = this.items[this.indexActiveItem];
+    this._allItemArea((pointOfSpace, coordinatesSpace) => {
+      activeItem.inTrunk = true;
+      pointOfSpace.content = activeItem.id;
+      if (startPoint.x === coordinatesSpace.x
+        && startPoint.y === coordinatesSpace.y) {
+        pointOfSpace.headPoint = true;
       }
-    }
+    }, startPoint, toPoint);
   }
 
   private clearUpPlace(itemId) {
@@ -141,17 +168,39 @@ export class TrunkComponent {
   }
 
   private droppedItemToPoint(itemId, pointOfSpace): void {
-    const indexActiveItem = this.items.findIndex(i => i.id === itemId);
-    const activeItem = this.items[indexActiveItem];
-    const toPoint = {
-      x: pointOfSpace.x + activeItem.size.width - 1,
-      y: pointOfSpace.y + activeItem.size.height - 1
-    };
+    const activeItem = this.items[this.indexActiveItem];
+    const toPoint = this._getToPoing(activeItem, pointOfSpace);
     if (this.enoughSpaceForItem(activeItem.id, pointOfSpace, toPoint)) {
       if (activeItem.inTrunk) {
         this.clearUpPlace(activeItem.id);
       }
-      this.takeUpPlaces(indexActiveItem, pointOfSpace, toPoint);
+      this.takeUpPlaces(pointOfSpace, toPoint);
+    }
+  }
+
+  private _getToPoing(activeItem, pointOfSpace) {
+    return {
+      x: pointOfSpace.x + activeItem.size.width - 1,
+      y: pointOfSpace.y + activeItem.size.height - 1
+    };
+  }
+
+  private _allItemArea(fn, fromPoint, toPoint) {
+    for (let iY = fromPoint.y; iY <= toPoint.y; iY++) {
+      for (let iX = fromPoint.x; iX <= toPoint.x; iX++) {
+        if (this.space[iY]
+          && this.space[iY][iX]) {
+          fn(this.space[iY][iX], {x: iX, y: iY})
+        }
+      }
+    }
+  }
+
+  private _allTrunkArea(fn) {
+    for (let iY = 0; iY < this.space.length; iY++) {
+      for (let iX = 0; iX < this.space[iY].length; iX++) {
+        fn(this.space[iY][iX], {x: iX, y: iY})
+      }
     }
   }
 }

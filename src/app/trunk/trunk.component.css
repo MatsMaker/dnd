@@ -14,13 +14,16 @@
   border: solid 1px;
 }
 
+.item-space.in-shadow {
+  background-color: gray;
+}
+
 .item-busy {
   background-color: blueviolet;
 }
 
 .drop-area {
   width: 100%;
-  /*height: 100%;*/
   background-color: antiquewhite;
 }
 
@@ -31,7 +34,7 @@
 }
 
 .item.in-trunk {
-  background-color: brown;
+  background-color: green;
 }
 
 .item.width-1 {
