@@ -13,13 +13,14 @@
 </div>
 
 <div class="space">
-  <div *ngFor="let row of space" class="row-space">
-    <div *ngFor="let point of row"
+  <div *ngFor="let y of space" class="row-space">
+    <div *ngFor="let point of y"
          class="item-space drop-point"
+         [ngClass]="{'item-busy': point.content}"
          mwlDroppable
          (drop)="onDrop($event, point)">
-      row:{{point.x}}
-      clmn:{{point.y}}
+      x:{{point.x}}
+      y:{{point.y}}
       content: {{point.content}}
     </div>
   </div>

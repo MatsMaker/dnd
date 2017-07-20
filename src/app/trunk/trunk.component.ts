@@ -24,9 +24,17 @@ const ITEMS = [{
     width: 2,
     height: 2
   }
+}, {
+  id: 3,
+  name: 'lamp',
+  inTrunk: false,
+  size: {
+    width: 1,
+    height: 3
+  }
 }]
 
-const SPACE_SIZE = [4, 5]
+const SPACE_SIZE = [5, 4]
 
 
 @Component({
@@ -49,15 +57,15 @@ export class TrunkComponent {
 
   private createSpace(spaceSize) {
     const space = [];
-    for (let iColumn = 0; iColumn < spaceSize[1]; iColumn++) {
-      for (let iRow = 0; iRow < spaceSize[0]; iRow++) {
-        if (space[iRow] === undefined) {
-          space[iRow] = [];
+    for (let iX = 0; iX < spaceSize[0]; iX++) {
+      for (let iY = 0; iY < spaceSize[1]; iY++) {
+        if (space[iY] === undefined) {
+          space[iY] = [];
         }
-        space[iRow].push({
+        space[iY].push({
           content: null,
-          x: iColumn,
-          y: iRow
+          x: iX,
+          y: iY
         });
       }
     }
@@ -76,12 +84,20 @@ export class TrunkComponent {
 
   private droppedItemToPoint(item, pointOfSpace): void {
     const activeItem = this.items.find(i => i.id === item.id);
+    const lastY = pointOfSpace.y + activeItem.size.height - 1;
+    const lastX = pointOfSpace.x + activeItem.size.width - 1;
     if (this.space
-      && this.space[pointOfSpace.x + activeItem.size.width - 1]
-      && this.space[pointOfSpace.x + activeItem.size.width - 1][pointOfSpace.y + activeItem.size.height - 1]
-      && this.space[pointOfSpace.x + activeItem.size.width - 1][pointOfSpace.y + activeItem.size.height - 1].content === null) {
-      activeItem.inTrunk = true;
-      this.space[pointOfSpace.x][pointOfSpace.y].content = activeItem.name;
+      && this.space[lastY]
+      && this.space[lastY][lastX]
+      && this.space[lastY][lastX].content === null) {
+
+      for (let iY = pointOfSpace.y; iY <= lastY; iY++) {
+        for (let iX = pointOfSpace.x; iX <= lastX; iX++) {
+          activeItem.inTrunk = true;
+          this.space[iY][iX].content = activeItem.id;
+        }
+      }
+
     }
   }
 }
