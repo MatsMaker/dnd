@@ -1,6 +1,6 @@
 # Puzzle game. Need move all items in area.
 
-![Alt text](screenshot.png?raw=true "Title")
+![Alt text](preview.gif?raw=true "Title")
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.2.1.
 
